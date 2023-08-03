@@ -81,8 +81,12 @@ def train_model(model, train_loader, num_epochs=10):
             # Forward pass, loss computation, and backward pass
             outputs, hidden = model(inputs, hidden)
             loss = criterion(outputs, targets.view(-1))
-            loss.backward()
+            loss.backward(retain_graph=True)
             optimizer.step()
+
+
+
+
 
             total_loss += loss.item()
 
