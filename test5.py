@@ -30,6 +30,11 @@ with open('data/book1.txt', 'r', encoding='utf-8') as file:
 sequences, char_to_idx, idx_to_char = preprocess_text(text, seq_length)
 vocab_size = len(char_to_idx)
 
+# 保存字符到数字的映射字典和数字到字符的映射字典
+np.save('data/char_to_idx.npy', char_to_idx)
+np.save('data/idx_to_char.npy', idx_to_char)
+
+
 # 将数据移到设备（GPU或CPU）
 train_data = np.array(sequences, dtype=np.int64)
 train_data = torch.tensor(train_data,dtype=torch.long).to(device)
@@ -89,6 +94,7 @@ def train_model(model, train_loader, num_epochs=10):
 
 
             total_loss += loss.item()
+            print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {loss.item():.4f}')
 
         print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {total_loss / len(train_loader):.4f}')
 
@@ -96,7 +102,10 @@ def train_model(model, train_loader, num_epochs=10):
 # Train the model using the DataLoader
 train_model(model, train_loader)
 
-def generate_text(model, start_text, length=100):
+# 保存模型
+torch.save(model.state_dict(), 'data/model.pth')
+
+def generate_text(model, start_text, char_to_idx,idx_to_char,length=100):
     model.eval()
     with torch.no_grad():
         hidden = None
@@ -113,6 +122,10 @@ def generate_text(model, start_text, length=100):
 
         return generated_text
 # 6. Generate text using the model (Assuming you have already implemented the generate_text function)
-start_text = "Once upon a time"
-generated_text = generate_text(model, start_text, length=200)
+start_text = "从前有座山"
+# 导入模型和字符到数字的映射字典
+model=model.load_state_dict(torch.load('data/model.pth'))
+char_to_idx=np.load('data/char_to_idx.npy',allow_pickle=True).item()
+idx_to_char=np.load('data/idx_to_char.npy',allow_pickle=True).item()
+generated_text = generate_text(model, start_text,char_to_idx=char_to_idx,idx_to_char=idx_to_char, length=200)
 print(generated_text)
