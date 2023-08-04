@@ -1,10 +1,14 @@
 import torch
+import transformers
 import torch.nn as nn
-from transformers import BertTokenizer, BertModel
+from transformers import BertTokenizer, BertModel, AdamW
 
+
+BERT_PATH = './bert-base-chinese'
+transformers.logging.set_verbosity_error()
 # Load pre-trained BERT and tokenizer
-tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-bert = BertModel.from_pretrained('bert-base-uncased')
+tokenizer = BertTokenizer.from_pretrained(BERT_PATH)
+bert = BertModel.from_pretrained(BERT_PATH)
 
 
 # Define a simple RNN-based text generator with BERT embeddings
@@ -36,7 +40,7 @@ class RNNWithBERT(nn.Module):
 
 # Example usage
 # Assuming you have your input text and corresponding input_ids and attention_mask
-input_text = "Hello, how are you?"
+input_text = "从前有座山"
 input_ids = torch.tensor(tokenizer.encode(input_text, add_special_tokens=True)).unsqueeze(0)
 attention_mask = torch.ones_like(input_ids)
 
