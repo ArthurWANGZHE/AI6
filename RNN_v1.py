@@ -129,3 +129,7 @@ char_to_idx=np.load('data/char_to_idx.npy',allow_pickle=True).item()
 idx_to_char=np.load('data/idx_to_char.npy',allow_pickle=True).item()
 generated_text = generate_text(model, start_text,char_to_idx=char_to_idx,idx_to_char=idx_to_char, length=200)
 print(generated_text)
+
+# 能运行但是 一个epoch没有就会显存不够
+# 需要继续优化一些结构功能
+# 需要检查一下
