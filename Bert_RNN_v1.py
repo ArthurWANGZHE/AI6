@@ -112,6 +112,7 @@ for epoch in range(num_epochs):
         optimizer.step()
 
         total_loss += loss.item()
+        print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {loss.item():.4f}")
 
     average_loss = total_loss / (len(sequences) // batch_size)
     print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {average_loss}")
@@ -165,3 +166,9 @@ def generate_text(prompt, max_length=200, temperature=1.0):
 initial_prompt = "从前有座山"
 generated_text = generate_text(initial_prompt, max_length=200, temperature=0.7)
 print(generated_text)
+
+
+# 目前能跑
+# 估计显存不够
+# 参数都没调
+# 都需要优化改注释什么的
