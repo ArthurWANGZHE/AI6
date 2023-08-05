@@ -54,7 +54,7 @@ class RNNTextGenerator(nn.Module):
 
 
 # 读取数据
-with open('data/book1.txt', 'r', encoding='utf-8') as file:
+with open('data/book.txt', 'r', encoding='utf-8') as file:
     text = file.read()
 sequences, char_to_idx, idx_to_char = preprocess_text(text, seq_length)
 vocab_size = len(char_to_idx)
