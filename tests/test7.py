@@ -5,7 +5,7 @@ from torch.utils.data import DataLoader, Dataset
 from transformers import BertTokenizer, BertModel, AdamW
 import numpy as np
 
-BERT_PATH = './bert-base-chinese'
+BERT_PATH = '../bert-base-chinese'
 transformers.logging.set_verbosity_error()
 # Load pre-trained BERT and tokenizer
 tokenizer = BertTokenizer.from_pretrained(BERT_PATH)
@@ -30,7 +30,7 @@ def preprocess_text(text, seq_length):
 
     return sequences, char_to_idx, idx_to_char
 
-with open('data/book1.txt', 'r', encoding='utf-8') as file:
+with open('../data/book1.txt', 'r', encoding='utf-8') as file:
     text = file.read()
 
 seq_length = 100
@@ -38,8 +38,8 @@ sequences, char_to_idx, idx_to_char = preprocess_text(text, seq_length)
 vocab_size = len(char_to_idx)
 
 # 保存字符到数字的映射字典和数字到字符的映射字典
-np.save('data/char_to_idx.npy', char_to_idx)
-np.save('data/idx_to_char.npy', idx_to_char)
+np.save('../data/char_to_idx.npy', char_to_idx)
+np.save('../data/idx_to_char.npy', idx_to_char)
 
 
 # Define the RNN-based text generator
@@ -122,7 +122,7 @@ class TextDataset(Dataset):
         return input_ids, attention_mask
 
 # Prepare your training dataset (replace 'novel.txt' with your own file path)
-train_dataset = TextDataset('data/book1.txt')
+train_dataset = TextDataset('../data/book1.txt')
 train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
 
 # Training data (example data, replace with your own dataset)

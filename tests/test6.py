@@ -4,7 +4,7 @@ import torch.nn as nn
 from transformers import BertTokenizer, BertModel, AdamW
 
 
-BERT_PATH = './bert-base-chinese'
+BERT_PATH = '../bert-base-chinese'
 transformers.logging.set_verbosity_error()
 # Load pre-trained BERT and tokenizer
 tokenizer = BertTokenizer.from_pretrained(BERT_PATH)

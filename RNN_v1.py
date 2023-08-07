@@ -92,13 +92,14 @@ def train_model(model, train_loader, num_epochs=10):
                 optimizer.step()
                 pbar.set_postfix({'loss': '{0:1.5f}'.format(loss.item()), 'Epoch': epoch_count})
                 pbar.update(1)
-                epoch_count += 1
+        total_loss += loss.item()
+        epoch_count += 1
 
 
 
 
 
-            total_loss += loss.item()
+
 
 
 
