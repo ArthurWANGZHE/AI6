@@ -13,7 +13,7 @@ transformers.logging.set_verbosity_error()
 tokenizer = BertTokenizer.from_pretrained(BERT_PATH)
 bert = BertModel.from_pretrained(BERT_PATH)
 
-# 超参数
+
 seq_length = 100 # 序列长度
 
 # 读取数据构建字典并保存

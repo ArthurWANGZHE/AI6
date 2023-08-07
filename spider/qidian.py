@@ -10,7 +10,7 @@ url__ = ['https://www.qidian.com/free/all/','https://www.qidian.com/free/all/pag
        'https://www.qidian.com/free/all/page3/',
        'https://www.qidian.com/free/all/page4/',
        'https://www.qidian.com/free/all/page5/']
-# 伪装成浏览器
+# headers
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
                     'AppleWebKit/537.36 (KHTML, like Gecko) '
