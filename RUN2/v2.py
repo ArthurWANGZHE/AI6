@@ -8,7 +8,7 @@ from tqdm import tqdm
 
 T = 2
 
-BERT_PATH = './bert-base-chinese'
+BERT_PATH = '../bert-base-chinese'
 transformers.logging.set_verbosity_error()
 tokenizer = BertTokenizer.from_pretrained(BERT_PATH)
 bert = BertModel.from_pretrained(BERT_PATH)
@@ -81,7 +81,7 @@ class RNNTextGenerator(nn.Module):
 
 
 # 读取数据
-with open('data/book.txt', 'r', encoding='utf-8') as file:
+with open('../book.txt', 'r', encoding='utf-8') as file:
     text = file.read()
 sequences, char_to_idx, idx_to_char = preprocess_text(text, seq_length)
 vocab_size = len(char_to_idx)
