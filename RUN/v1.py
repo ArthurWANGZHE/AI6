@@ -128,7 +128,7 @@ num_epochs = 10
 batch_size = 32
 loss_list = []
 epoch_count = 1
-initial_prompt = "从前有座山"
+initial_prompt = "从前有座山山上有座庙"
 
 for epoch in range(num_epochs):
     generator.train()

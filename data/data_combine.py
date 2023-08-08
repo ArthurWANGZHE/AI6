@@ -8,6 +8,8 @@ for i in range(1,39):
         text = text.replace('\r', '')
         text = text.replace('~', '')
         text = text.replace('·', '')
+        text = text.replace('，', '')
+        text = text.replace('。', '')
         text = text.replace('？', '')
         text = text.replace('！', '')
         text = text.replace('；', '')
