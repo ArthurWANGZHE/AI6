@@ -177,3 +177,7 @@ print(generated_text)
 # 目前能跑
 # 估计显存不够
 # 参数都没调
+
+# 2023/8/8
+# 38本全用了，bacth32，但是sequence设为32000，loss下降慢
+# 改成每个epoch完试一下
