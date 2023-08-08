@@ -124,7 +124,7 @@ class RNN_BERT(nn.Module):
 generator = RNN_BERT(hidden_size, vocab_size)
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(generator.parameters(), lr=0.001)
-num_epochs = 5
+num_epochs = 10
 batch_size = 32
 loss_list = []
 epoch_count = 1
@@ -134,8 +134,8 @@ for epoch in range(num_epochs):
     generator.train()
     total_loss = 0
 
-    with tqdm(320 // batch_size) as pbar:
-        for i in range(0, 320, batch_size):
+    with tqdm(640 // batch_size) as pbar:
+        for i in range(0, 640, batch_size):
             batch_sequences = sequences[i:i + batch_size]
             input_ids = batch_sequences[:, :-1]  # Input sequence (exclude last character)
             attention_mask = (input_ids != 0).type(torch.long)  # Attention mask to ignore padding tokens
@@ -151,7 +151,7 @@ for epoch in range(num_epochs):
             loss_list.append(loss.item())
             pbar.set_postfix({'loss': '{0:1.5f}'.format(loss.item()),'Epoch':epoch_count})
             pbar.update(1)
-    torch.save(generator.state_dict(), f'model_{epoch_count}.pth')
+#    torch.save(generator.state_dict(), f'model_{epoch_count}.pth')
     epoch_count += 1
     try:
         average_loss = total_loss / (len(sequences) // batch_size)
@@ -179,6 +179,6 @@ generator.eval()
 
 
 #  "从前有座山"
-initial_prompt = "从前有座山"
+initial_prompt = "从前有座山,山上有座庙"
 generated_text = generate_text(initial_prompt, max_length=200, temperature=0.7)
 print(generated_text)
