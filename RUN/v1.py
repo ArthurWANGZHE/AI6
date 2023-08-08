@@ -153,12 +153,10 @@ for epoch in range(num_epochs):
             pbar.update(1)
 #    torch.save(generator.state_dict(), f'model_{epoch_count}.pth')
     epoch_count += 1
-    try:
-        average_loss = total_loss / (len(sequences) // batch_size)
-        generated_text = generate_text(initial_prompt, max_length=200, temperature=0.7)
-        print(generated_text)
-    except:
-        continue
+    average_loss = total_loss / (len(sequences) // batch_size)
+    generated_text = generate_text(initial_prompt, max_length=200, temperature=0.7)
+    print(generated_text)
+
 
 # 保存模型
 torch.save(generator.state_dict(), f'model_final_1.pth')
