@@ -8,7 +8,7 @@ from tqdm import tqdm
 # 手动输入第几次训练
 T = eval(input("请输入第几次训练："))
 
-BERT_PATH = './bert-base-chinese'
+BERT_PATH = 'bert-base-chinese'
 transformers.logging.set_verbosity_error()
 tokenizer = BertTokenizer.from_pretrained(BERT_PATH)
 bert = BertModel.from_pretrained(BERT_PATH)
