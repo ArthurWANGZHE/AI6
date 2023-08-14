@@ -5,7 +5,7 @@ import numpy as np
 import transformers
 from tqdm import tqdm
 
-# 手动输入第几次训练
+
 T = eval(input("请输入第几次训练："))
 
 BERT_PATH = 'bert-base-chinese'
@@ -36,7 +36,7 @@ def preprocess_text(text, seq_length):
     return sequences, char_to_idx, idx_to_char
 
 
-# Rnn文本生成
+# Rnn
 class RNNTextGenerator(nn.Module):
     def __init__(self, input_size, hidden_size, vocab_size):
         super(RNNTextGenerator, self).__init__()
@@ -61,13 +61,10 @@ vocab_size = len(char_to_idx)
 sequences = torch.tensor(sequences, dtype=torch.long)
 
 
-
-
-# 定义模型
 input_size = vocab_size
 hidden_size = 256
 
-# Bert特征提取
+# Bert
 class BERT(nn.Module):
     def __init__(self):
         super(BERT, self).__init__()
@@ -80,7 +77,7 @@ class BERT(nn.Module):
         return bert_output.last_hidden_state
 
 
-# 定义模型
+# RNN_BERT
 class RNN_BERT(nn.Module):
     def __init__(self, hidden_size, vocab_size):
         super(RNN_BERT, self).__init__()
@@ -99,7 +96,6 @@ criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(generator.parameters(), lr=0.001)
 num_epochs = 10
 batch_size = 32
-loss_list = []
 epoch_count = 1
 for epoch in range(num_epochs):
     generator.train()
@@ -108,9 +104,9 @@ for epoch in range(num_epochs):
     with tqdm(total=len(sequences) // batch_size) as pbar:
         for i in range(0, len(sequences), batch_size):
             batch_sequences = sequences[i:i + batch_size]
-            input_ids = batch_sequences[:, :-1]  # Input sequence (exclude last character)
-            attention_mask = (input_ids != 0).type(torch.long)  # Attention mask to ignore padding tokens
-            target_ids = batch_sequences[:, 1:]  # Target sequence (exclude first character)
+            input_ids = batch_sequences[:, :-1]
+            attention_mask = (input_ids != 0).type(torch.long)
+            target_ids = batch_sequences[:, 1:]
 
             optimizer.zero_grad()
             logits = generator(input_ids, attention_mask)
@@ -119,7 +115,6 @@ for epoch in range(num_epochs):
             optimizer.step()
 
             total_loss += loss.item()
-            loss_list.append(loss.item())
             pbar.set_postfix({'loss': '{0:1.5f}'.format(loss.item()),'Epoch':epoch_count})
             pbar.update(1)
     epoch_count += 1
@@ -131,16 +126,13 @@ torch.save(generator.state_dict(), f'model_{T}.pth')
 
 
 # 读取模型
-T_ = eval(input("请输入读取第几次训练："))
-char_to_idx = np.load(f'char_to_idx{T_}.npy', allow_pickle=True).item()
-idx_to_char = np.load(f'idx_to_char{T_}.npy', allow_pickle=True).item()
-
-# 加载模型
+char_to_idx = np.load(f'char_to_idx{T}.npy', allow_pickle=True).item()
+idx_to_char = np.load(f'idx_to_char{T}.npy', allow_pickle=True).item()
 hidden_size = 256
 vocab_size = len(char_to_idx)
 generator = RNN_BERT(hidden_size, vocab_size)
 
-generator.load_state_dict(torch.load(f'model_{T_}.pth', map_location=torch.device('cpu')))
+generator.load_state_dict(torch.load(f'model_{T}.pth', map_location=torch.device('cpu')))
 generator.eval()
 
 # 生成文本
@@ -168,7 +160,7 @@ def generate_text(prompt, max_length=200, temperature=1.0):
 
         return output_text
 
-#  "从前有座山"
+
 initial_prompt = "从前有座山"
 generated_text = generate_text(initial_prompt, max_length=200, temperature=0.7)
 print(generated_text)
