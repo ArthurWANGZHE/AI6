@@ -14,9 +14,9 @@ tokenizer = BertTokenizer.from_pretrained(BERT_PATH)
 bert = BertModel.from_pretrained(BERT_PATH)
 
 
-seq_length = 100 # 序列长度
+seq_length = 100
 
-# 读取数据构建字典并保存
+
 def preprocess_text(text, seq_length):
     chars = sorted(list(set(text)))
     char_to_idx = {ch: i for i, ch in enumerate(chars)}
@@ -37,7 +37,6 @@ def preprocess_text(text, seq_length):
 
 
 
-# 生成文本
 def generate_text(prompt, max_length=200, temperature=1.0):
     input_ids = torch.tensor([[char_to_idx[ch] for ch in prompt]], dtype=torch.long)
     attention_mask = (input_ids != 0).type(torch.long)
@@ -63,7 +62,6 @@ def generate_text(prompt, max_length=200, temperature=1.0):
         return output_text
 
 
-# Rnn文本生成
 class RNNTextGenerator(nn.Module):
     def __init__(self, input_size, hidden_size, vocab_size):
         super(RNNTextGenerator, self).__init__()
@@ -80,7 +78,6 @@ class RNNTextGenerator(nn.Module):
 
 
 
-# 读取数据
 with open('book0.txt', 'r', encoding='utf-8') as file:
     text = file.read()
 sequences, char_to_idx, idx_to_char = preprocess_text(text, seq_length)
@@ -89,12 +86,10 @@ sequences = torch.tensor(sequences, dtype=torch.long)
 
 
 
-
-# 定义模型
 input_size = vocab_size
 hidden_size = 256
 
-# Bert特征提取
+
 class BERT(nn.Module):
     def __init__(self):
         super(BERT, self).__init__()
@@ -107,7 +102,6 @@ class BERT(nn.Module):
         return bert_output.last_hidden_state
 
 
-# 定义模型
 class RNN_BERT(nn.Module):
     def __init__(self, hidden_size, vocab_size):
         super(RNN_BERT, self).__init__()
@@ -120,7 +114,6 @@ class RNN_BERT(nn.Module):
         return rnn_output
 
 
-# 训练
 generator = RNN_BERT(hidden_size, vocab_size)
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(generator.parameters(), lr=0.001)
@@ -160,16 +153,15 @@ for epoch in range(num_epochs):
     except:
         continue
 
-# 保存模型
+
 torch.save(generator.state_dict(), f'model_final.pth')
 
 
-# 读取模型
 T_ = 2
 char_to_idx = np.load(f'char_to_idx{T_}.npy', allow_pickle=True).item()
 idx_to_char = np.load(f'idx_to_char{T_}.npy', allow_pickle=True).item()
 
-# 加载模型
+
 hidden_size = 256
 vocab_size = len(char_to_idx)
 generator = RNN_BERT(hidden_size, vocab_size)
@@ -178,7 +170,6 @@ generator.load_state_dict(torch.load(f'model_{T_}.pth', map_location=torch.devic
 generator.eval()
 
 
-#  "从前有座山"
 initial_prompt = "从前有座山"
 generated_text = generate_text(initial_prompt, max_length=200, temperature=0.7)
 print(generated_text)
