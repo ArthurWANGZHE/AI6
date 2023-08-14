@@ -16,7 +16,7 @@ bert = BertModel.from_pretrained(BERT_PATH)
 
 seq_length =200 # 序列长度
 
-# 读取数据构建字典并保存
+
 def preprocess_text(text, seq_length):
     chars = sorted(list(set(text)))
     char_to_idx = {ch: i for i, ch in enumerate(chars)}
@@ -63,7 +63,7 @@ def generate_text(prompt, max_length=200, temperature=0.7):
         return output_text
 
 
-# Rnn文本生成
+
 class RNNTextGenerator(nn.Module):
     def __init__(self, input_size, hidden_size, vocab_size):
         super(RNNTextGenerator, self).__init__()
@@ -88,13 +88,10 @@ vocab_size = len(char_to_idx)
 sequences = torch.tensor(sequences, dtype=torch.long)
 
 
-
-
-# 定义模型
 input_size = vocab_size
 hidden_size = 256
 
-# Bert特征提取
+
 class BERT(nn.Module):
     def __init__(self):
         super(BERT, self).__init__()
@@ -107,7 +104,7 @@ class BERT(nn.Module):
         return bert_output.last_hidden_state
 
 
-# 定义模型
+
 class RNN_BERT(nn.Module):
     def __init__(self, hidden_size, vocab_size):
         super(RNN_BERT, self).__init__()
@@ -176,7 +173,6 @@ generator.load_state_dict(torch.load('model_final_1.pth', map_location=torch.dev
 generator.eval()
 
 
-#  "从前有座山"
 initial_prompt = "一想到她，我就不由自主地想起了那个夏天。"
 generated_text = generate_text(initial_prompt, max_length=200, temperature=0.7)
 print(generated_text)
